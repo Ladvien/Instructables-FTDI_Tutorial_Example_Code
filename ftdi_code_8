@@ -1,0 +1,22 @@
+FTDI_HELPER.C
+
+bool reset_device(int * local_baud_rate)
+{
+	FT_ResetPort(devInfo[connected_device_num].ftHandle);
+	Sleep(50);
+	FT_SetBaudRate(devInfo[connected_device_num].ftHandle, *local_baud_rate);
+	Sleep(50);
+
+	if (FT_status != FT_OK)
+	{
+		printf("Could not reset FTDI device.\n");
+		Sleep(3000);
+		return false;
+	}
+	else
+	{
+		// Device reset a success.
+		return true;
+	}				
+	return false; // Just in case.
+}

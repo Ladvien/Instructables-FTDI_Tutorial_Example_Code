@@ -1,0 +1,28 @@
+FTDI_HELPER.C
+
+bool tx(char data[], int tx_data_size, bool print_or_not)
+{
+	uint8_t FTWrite_Check;
+	int char_tx_count = 0;
+
+	while(char_tx_count != tx_data_size)
+	{
+		//This should print just data (ie, no Start Code, Byte Count, Address, Record type, or Checksum).
+		FTWrite_Check = FT_Write(devInfo[connected_device_num].ftHandle, &data[char_tx_count], (DWORD)sizeof(data[char_tx_count]), &BytesWritten);
+		if (FTWrite_Check != FT_OK)
+		{
+			printf("Bad write!\n");
+		}
+		if(print_or_not)
+		{
+			printf("%C", data[char_tx_count]);
+		}
+		char_tx_count++;
+	}
+
+	if (char_tx_count == tx_data_size)
+	{
+		return true;
+	}
+	return false;
+}

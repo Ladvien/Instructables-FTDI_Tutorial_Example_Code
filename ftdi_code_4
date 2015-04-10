@@ -1,0 +1,16 @@
+FTDI_HELPER.C
+
+void quick_connect()
+{
+	int local_baud_rate = 115200;
+	// Create the device information list
+	ftStatus = FT_CreateDeviceInfoList(&numDevs);
+	// get the device information list
+	ftStatus = FT_GetDeviceInfoList(devInfo,&numDevs);
+	// Open user's selection.
+	// Allocate storage for list based on numDevs.
+	devInfo =
+	(FT_DEVICE_LIST_INFO_NODE*)malloc(sizeof(FT_DEVICE_LIST_INFO_NODE)*numDevs);
+	FT_Open(0, &devInfo[0].ftHandle);
+	FT_SetBaudRate(devInfo[0].ftHandle, local_baud_rate);
+}

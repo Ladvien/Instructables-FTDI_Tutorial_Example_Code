@@ -1,0 +1,28 @@
+FTDI_HELPER.C
+
+bool rx(bool print_or_not)
+{
+	// We need to get the status to see if we have characters in buffer.
+	FT_GetStatus(devInfo[connected_device_num].ftHandle, &RxBytes, &TxBytes, &EventDWord);
+	// We turn the buffer into a string; this is for easy parsing.
+	RawRxBuffer[RxBytes+1] = '\0';
+	// We only want to read the FTDI if there are bytes to read.
+	if (RxBytes > 0) {
+		// Read the bytes.  They are stored in the RawRxBuffer, BytesReceived is how many bytes we got
+		// instead of how many bytes we should get.
+		FT_status = FT_Read(devInfo[connected_device_num].ftHandle,RawRxBuffer,RxBytes,&BytesReceived);
+		if (FT_status == FT_OK) {
+			if(print_or_not)
+			{
+				printf("%s\n", RawRxBuffer);
+			}
+			// Put code here to copy string out of function.
+			return true;
+		}
+		else {
+			printf("RX FAILED \n");
+			return false;
+		}
+	}
+	return false;
+}

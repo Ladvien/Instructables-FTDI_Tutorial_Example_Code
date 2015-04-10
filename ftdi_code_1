@@ -1,0 +1,15 @@
+YOUR_CODE.C
+
+FT_DEVICE_LIST_INFO_NODE *devInfo;
+bool FTDI_open_flag;
+
+
+uint8_t RawRxBuffer[2048];
+
+
+FT_STATUS ftSvtatus;
+DWORD EventDWord;
+DWORD TxBytes;
+DWORD BytesWritten;
+DWORD RxBytes;
+DWORD BytesReceived;

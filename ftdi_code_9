@@ -1,0 +1,61 @@
+FTDI_HELPER.C
+
+bool set_baud_rate(int * local_baud_rate)
+{
+
+	char char_choice[3];
+	int int_choice = 0;
+
+	system("cls");
+	printf("Set baud: \n");	
+	printf("1. 9600\n");
+	printf("2. 19200\n");
+	printf("3. 38400\n");
+	printf("4. 57600\n");
+	printf("5. 115200\n");
+	printf("6. 230400\n");
+	printf("9. Exit\n");
+
+	scanf("%s", char_choice);
+	int_choice = atoi(char_choice);
+
+	switch (int_choice)
+	{
+		case 1:
+			*local_baud_rate = 9600;
+			break;
+		case 2:
+			*local_baud_rate = 19200;
+			break;
+		case 3:
+			*local_baud_rate = 38400;
+			break;
+		case 4:
+			*local_baud_rate = 57600;
+			break;
+		case 5:
+			*local_baud_rate = 115200;
+			break;
+		case 6:
+			*local_baud_rate = 230400;
+			break;
+		case 9:
+			return false;
+			break;
+		default:printf("""Bad choice. Hot glue!""");
+		    break;
+	}
+
+	FT_SetBaudRate(devInfo[connected_device_num].ftHandle, *local_baud_rate);
+	if (FT_OK != FT_OK)
+	 {
+	 	printf("Unable to change baud-rate\n");
+	 	Sleep(3000);
+	 	return false;
+	 } 
+	 else
+	 {
+	 	return true;
+	 }
+	 return false;
+}

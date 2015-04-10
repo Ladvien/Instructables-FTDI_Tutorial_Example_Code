@@ -1,0 +1,61 @@
+FTDI_HELPER.C
+
+bool connect_device(int * local_baud_rate)
+{
+
+	char char_choice[3];
+	int int_choice = 0;
+
+	bool connected_flag = false;
+
+	system("cls");
+	printf("Which device # (0-8)?\n\n");
+	printf("9. Return\n");
+
+	printf("\n\nConnected FTDI:");
+	for (int i = 0; i < numDevs && i < 8; i++) {
+		printf("\nDevice: %d:\n",i);
+		printf(" 	Flags:         0x%02X\n",devInfo[i].Flags);
+		printf(" 	Type:          0x%02X\n",devInfo[i].Type);
+		printf(" 	ID:            0x%02X\n",devInfo[i].ID);
+		printf(" 	Local ID:      0x%02X\n",devInfo[i].LocId);
+		printf(" 	Serial Number: %s\n",devInfo[i].SerialNumber);
+		printf(" 	Description:   %s\n",devInfo[i].Description);
+		printf(" 	ftHandle =     0x%02X\n",devInfo[i].ftHandle);
+	}
+
+	scanf("%s", char_choice);
+	int_choice = atoi(char_choice);
+
+	// Limit list to 9 devices.  Really, who has more connected at once?
+	if (int_choice == 9)
+	{
+		return false;
+	}
+	else if (int_choice > -1 && int_choice < 9 && int_choice <= numDevs)
+	{
+		// Open user's selection.
+		FT_Open(int_choice, &devInfo[int_choice].ftHandle);
+
+		// Set default baud rate.
+		*local_baud_rate = 115200;
+
+		FT_SetBaudRate(devInfo[connected_device_num].ftHandle, *local_baud_rate);
+
+		if (FT_status != FT_OK)
+		{
+			printf("Could not open FTDI device #%i.\n", int_choice);
+			Sleep(3000);
+		}
+		else
+		{
+			connected_device_num = int_choice;
+			return true;
+		}
+	}
+	else
+	{
+		return false;
+	}
+	return false;
+}

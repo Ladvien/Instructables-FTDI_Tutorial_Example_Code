@@ -1,0 +1,18 @@
+FTDI_HELPER.C
+
+bool close_device()
+{
+	FT_Close(devInfo[connected_device_num].ftHandle);
+
+	if (FT_status != FT_OK)
+	{
+		printf("Could not close FTDI device.\n");
+		Sleep(3000);
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+	return false;
+}

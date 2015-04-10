@@ -1,0 +1,18 @@
+FTDI_HELPER.C
+
+bool set_baud_rate_auto(int * local_baud_rate)
+{
+	FT_SetBaudRate(devInfo[connected_device_num].ftHandle, *local_baud_rate);
+	
+	if (FT_OK != FT_OK)
+	 {
+	 	printf("Unable to change baud-rate\n");
+	 	Sleep(3000);
+	 	return false;
+	 } 
+	 else
+	 {
+	 	return true;
+	 }
+	 return false;
+}

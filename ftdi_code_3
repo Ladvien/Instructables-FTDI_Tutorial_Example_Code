@@ -1,0 +1,102 @@
+FTDI_HELPER.C
+
+void ftdi_menu()
+{
+	int baud_rate = 0;	
+	char char_choice[3];
+	int int_choice = 0;
+
+	bool got_list = false;
+	bool connected_flag = false;
+	bool close_device_flag = false;
+	bool set_baud_flag = false;
+
+	// FTDI Menu
+	do
+	{
+		system("cls");
+		printf("FTDI Menu: ");
+		if (connected_flag == true)
+		{
+			printf("       Connected: %lu, N, 1     \n\n", baud_rate);
+		}
+		else
+		{
+			printf("       Not Connected:               \n\n");
+		}
+		printf("1. Quick Connect\n");
+		printf("2. Device List\n");
+		if (got_list == true) // Only display option if devices list.
+		{
+		printf("3. Connect Device\n"); 
+		}
+		if (connected_flag == true) // Only give display if connected.
+		{
+		printf("4. Close Device\n");
+		}
+		if (connected_flag == true) // Only give display if connected.
+		{
+		printf("5. Change baud-rate\n");
+		}
+
+		printf("9. Main Menu\n");
+
+		// If connected, display the connected device info.
+		if (connected_flag == true)
+		{
+			printf("\n");
+			printf("Connected Device: %d:\n", connected_device_num);
+			printf(" 	Flags:         0x%02X\n",devInfo[connected_device_num].Flags);
+			printf(" 	Type:          0x%02X\n",devInfo[connected_device_num].Type);
+			printf(" 	ID:            0x%02X\n",devInfo[connected_device_num].ID);
+			printf(" 	Local ID:      0x%02X\n",devInfo[connected_device_num].LocId);
+			printf(" 	Serial Number: %s\n",devInfo[connected_device_num].SerialNumber);
+			printf(" 	Description:   %s\n",devInfo[connected_device_num].Description);
+			printf(" 	ftHandle =     0x%02X\n",devInfo[connected_device_num].ftHandle);
+		}
+
+		// Get user choice.
+		scanf("%s", char_choice);
+
+		// Convert string to int for switch statement.
+		int_choice = atoi(char_choice);
+
+		switch (int_choice)
+		{
+			case 1:
+				quick_connect();
+				baud_rate = 115200;
+				connected_flag = true;
+			case 2:
+				got_list = get_device_list();
+				break;
+			case 3:
+				if (got_list == true) // Only display option if devices listed.
+				{			
+					connected_flag = connect_device(&baud_rate);
+				} 
+				break;
+			case 4:
+				if (connected_flag == true) // Only give display if connected.
+				{
+					close_device_flag = close_device();
+					if(close_device_flag == true){connected_flag = false;}
+					close_device_flag = false;
+			    }
+			    break;
+			case 5:
+				if (connected_flag == true) // Only give display if connected.
+				{
+					set_baud_flag = set_baud_rate(&baud_rate);
+					// set_baud_flag is not used, yet.
+
+}
+			    break;
+			case 9:
+				main_menu();    
+			    break;
+			default:printf("""Bad choice. Hot glue!""");
+			    break;
+		}
+	}while(int_choice !=99);
+}

@@ -1,0 +1,35 @@
+FTDI_HELPER.C
+
+bool get_device_list()
+{
+	// Create the device information list.
+	ftStatus = FT_CreateDeviceInfoList(&numDevs);
+
+	if (ftStatus == FT_OK) {
+		printf("Number of devices is %d\n",numDevs);
+	}
+	else {
+		printf("Failed to get FTDI device list.\n");
+	}
+
+	if (numDevs > 0) {
+		
+		// Allocate storage for list based on numDevs.
+		devInfo =
+		(FT_DEVICE_LIST_INFO_NODE*)malloc(sizeof(FT_DEVICE_LIST_INFO_NODE)*numDevs);
+		
+		// Get the device information list.
+		ftStatus = FT_GetDeviceInfoList(devInfo,&numDevs);
+		if (ftStatus == FT_OK) {
+				printf("Got Devices\n");
+			}
+		else
+			{
+				printf("Failed to get device list.\n");
+				Sleep(3000);
+			}
+			// Set flag if we got at least on device.
+			return true;	
+		}
+	return false;
+}
